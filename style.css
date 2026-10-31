@@ -8,7 +8,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .sb{position:absolute;width:4px;background:#2c3036;border-radius:2px}.sb.act{left:-4px;top:150px;height:30px}.sb.vup{left:-4px;top:205px;height:56px}.sb.vdn{left:-4px;top:275px;height:56px}.sb.pwr{right:-4px;top:230px;height:90px}
 #screen{position:relative;width:402px;height:874px;border-radius:57px;overflow:hidden;background:#0f1214}
 .layer{position:absolute;inset:0}
-#status{position:absolute;top:0;left:0;right:0;height:54px;padding:19px 32px 0 40px;display:flex;justify-content:space-between;font-weight:600;font-size:17px;z-index:20;pointer-events:none}
+#status{position:absolute;top:11px;left:0;right:0;height:37px;padding:0 34px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:17px;z-index:20;pointer-events:none}
 .sr{display:flex;gap:6px;align-items:center;font-size:15px}
 #island{position:absolute;top:11px;left:50%;width:126px;height:37px;margin-left:-63px;background:#000;border-radius:20px;z-index:21}
 #hind{position:absolute;bottom:8px;left:50%;width:134px;height:6px;margin-left:-67px;background:#e6e6e6;border-radius:3px;z-index:30;padding:10px 0;background-clip:content-box;box-sizing:content-box;height:6px}
