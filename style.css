@@ -17,6 +17,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .ld{font-size:17px;color:#c4c9ce}.lt{font-size:92px;font-weight:200;letter-spacing:-2px;line-height:1.05}
 #fp{position:absolute;bottom:118px;left:50%;margin-left:-26px;width:52px;height:52px;color:#d3d7db;padding:6px}
 #fp:active{color:#fff}.lh{position:absolute;bottom:92px;width:100%;text-align:center;font-size:12px;color:#8b939b}
+#pass{display:flex;flex-direction:column;align-items:center;padding-top:200px;background:#0f1214}
+.pt{font-size:20px;font-weight:600;margin-bottom:22px}
+#pform{display:flex;width:260px;border-bottom:1px solid #5a9bff}
+#pw{flex:1;min-width:0;background:none;border:0;outline:0;color:#fff;font-size:18px;padding:10px 4px;text-align:center}
+#pform button{padding:0 8px;font-size:20px}
+#perr{margin-top:16px;font-size:13px;color:#ff8a8a;min-height:18px}
+#pcancel{position:absolute;bottom:60px;right:30px;font-size:16px;color:#5a9bff}
 /* home */
 #home{background:radial-gradient(ellipse at 20% 5%,#25323c,#10161b 55%,#080b0d);padding:96px 22px 0}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px 8px}
