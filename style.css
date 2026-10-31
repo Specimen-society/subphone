@@ -83,3 +83,5 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .we{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid #2b3036;font-size:14px}
 .we i{width:4px;height:18px;border-radius:2px;background:#ff453a}.we em{margin-left:auto;font-style:normal;font-size:12px;color:#8f979f}
 @media (pointer:fine){.pages{overflow-x:hidden}}
+/* iOS처럼 스크롤바 숨김 (스크롤은 그대로 동작) */
+*{scrollbar-width:none}*::-webkit-scrollbar{display:none}
