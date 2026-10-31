@@ -106,3 +106,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .cc{width:76px;height:76px;border-radius:50%;background:#34c759;display:grid;place-items:center}.cc svg{width:34px;height:34px}.cc.end{background:#ff3b30}
 .bs{font-size:26px;color:#c9cdd1;width:76px;height:76px}
 .dialing{flex:1;display:flex;flex-direction:column;align-items:center;padding-top:60px}.dn{font-size:34px;font-weight:300}.ds{color:#8f979f;margin-top:8px}.dbtns{margin-top:auto;padding-bottom:70px}
+.seg button{flex:1;text-align:center;padding:5px;border-radius:7px;color:#cfd3d7;font-size:13px}.seg button.on{background:#3a3e44;color:#fff;font-weight:600}
+.acts button{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:#0a84ff}.acts button i{display:grid;place-items:center}
+.tl{font-size:14px;line-height:1.5;margin-top:7px;color:#d5d9dd}.tl b{display:block;font-size:11px;color:#8f979f;font-weight:600}
+.dgrid{display:grid;grid-template-columns:repeat(3,76px);gap:18px 28px;margin-top:44px}.dgrid span{width:76px;height:76px;border-radius:50%;background:#2a2d31;display:grid;place-items:center;font-size:11px;color:#cfd3d7;text-align:center}
+.caps{position:absolute;left:16px;right:16px;bottom:190px;display:flex;flex-direction:column;gap:6px}.cap{background:rgba(44,48,54,.94);border-radius:14px;padding:9px 13px;font-size:15px}
+#viewer img{cursor:pointer}
