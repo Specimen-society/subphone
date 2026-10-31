@@ -97,3 +97,6 @@ $('#pform').onsubmit = async (e) => {
     $('#perr').textContent = ++fails >= 3 ? '암호가 올바르지 않습니다. 힌트: 내 것' : '암호가 올바르지 않습니다';
   }
 };
+
+// 전원 버튼: 화면 끄기 / 켜면 잠금 화면(암호는 다시 입력)
+$('#pwr').onclick = () => { const off = $('#off'); if (off.hidden) off.hidden = false; else { off.hidden = true; $('#pw').value = ''; go('lock'); } };

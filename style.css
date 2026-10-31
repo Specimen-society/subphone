@@ -5,7 +5,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 [hidden]{display:none!important}
 /* iPhone 17: 393x852 logical, thin bezel, big radius */
 #phone{position:relative;width:420px;height:892px;padding:9px;border-radius:66px;background:linear-gradient(145deg,#3a3f46,#1a1d21 40%,#2c3036);border:1px solid #4a5058;box-shadow:0 30px 80px #000,inset 0 0 0 3px #0b0c0e;flex:none;transform-origin:center}
-.sb{position:absolute;width:4px;background:#2c3036;border-radius:2px}.sb.act{left:-4px;top:150px;height:30px}.sb.vup{left:-4px;top:205px;height:56px}.sb.vdn{left:-4px;top:275px;height:56px}.sb.pwr{right:-4px;top:230px;height:90px}
+.sb{position:absolute;width:4px;background:#2c3036;border-radius:2px}.sb.act{left:-4px;top:150px;height:30px}.sb.vup{left:-4px;top:205px;height:56px}.sb.vdn{left:-4px;top:275px;height:56px}.sb.pwr{right:-4px;top:230px;height:90px;cursor:pointer;border:0;padding:0;box-shadow:0 0 0 6px transparent}.sb.pwr:active{background:#555}
+#off{position:absolute;inset:0;background:#000;z-index:40}
 #screen{position:relative;width:402px;height:874px;border-radius:57px;overflow:hidden;background:#0f1214}
 .layer{position:absolute;inset:0}
 #status{position:absolute;top:11px;left:0;right:0;height:37px;padding:0 34px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:17px;z-index:20;pointer-events:none}
@@ -60,7 +61,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .shake{animation:sh .3s}@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 /* small screens: no frame, full screen */
 @media (max-width:480px){
-  .sb{display:none}
+  .sb{display:none}.sb.pwr{display:block;right:0;top:200px;width:8px;height:80px;border-radius:4px 0 0 4px;background:rgba(255,255,255,.18);z-index:50}
   body{display:block}
   #phone{width:100vw;height:100vh;height:100dvh;padding:0;border:0;border-radius:0;box-shadow:none;transform:none!important}
   #screen{width:100%;height:100%;border-radius:0}

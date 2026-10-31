@@ -5,7 +5,7 @@
 <title>제우스의 서브폰</title>
 <link rel="stylesheet" href="style.css"></head>
 <body>
-<div id="phone"><i class="sb act"></i><i class="sb vup"></i><i class="sb vdn"></i><i class="sb pwr"></i><div id="screen">
+<div id="phone"><i class="sb act"></i><i class="sb vup"></i><i class="sb vdn"></i><button class="sb pwr" id="pwr" aria-label="전원"></button><div id="screen">
   <div id="status"><span id="clk">9:40</span><span class="sr">LTE<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.800" fill="none" stroke="#fff" opacity=".45"/><rect x="2" y="2" width="8" height="9" rx="2.200" fill="#fff"/><path d="M25 4.500v4c.8-.3 1.500-1.100 1.500-2s-.7-1.700-1.500-2z" fill="#fff" opacity=".45"/></svg>34%</span></div>
   <div id="island"></div>
   <section id="lock" class="layer"><div class="ld">10월 24일</div><div class="lt">09:40</div>
@@ -18,6 +18,7 @@
   <section id="home" class="layer" hidden></section>
   <section id="app" class="layer" hidden></section>
   <section id="viewer" class="layer" hidden></section>
+  <div id="off" hidden></div>
   <button id="hind" aria-label="홈"></button>
 </div></div>
 <script src="app.js"></script></body></html>
