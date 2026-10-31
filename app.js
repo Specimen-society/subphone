@@ -17,9 +17,9 @@ const ICON = {
   pin: sv('<rect width="60" height="60" fill="#f2efe6"/><path d="M0 40L60 12v10L0 52z" fill="#fff"/><path d="M0 8h22v22H0z" fill="#bfe6a8"/><path d="M38 36h22v24H38z" fill="#9dd5f5"/><path d="M0 42L60 14" stroke="#ffcf4d" stroke-width="5"/><circle cx="31" cy="26" r="9" fill="#ff453a"/><circle cx="31" cy="26" r="3.500" fill="#fff"/>'),
   set: sv(grad('g5', '#a9a9af', '#5d5d62') + '<circle cx="30" cy="30" r="15.500" fill="none" stroke="#e1e1e6" stroke-width="6.500" stroke-dasharray="6.100 6.100"/><circle cx="30" cy="30" r="14" fill="#e1e1e6"/><circle cx="30" cy="30" r="6" fill="#6e6e73"/>'),
 };
-const APPS = [['msgs', '메시지', 'msg'], ['mail', '메일', 'mail'], ['gallery', '갤러리', 'pic'], [null, '시계', 'clock'], [null, '메모', 'note'], [null, '캘린더', 'cal']];
-const DOCK = [['calls', 'tel'], [null, 'cam'], [null, 'pin'], [null, 'set']];
-const TIME = { lock: '9:40', home: '9:40', msgs: '9:41', thread: '9:41', mail: '9:42', mailview: '9:42', calls: '9:42', gallery: '9:43' };
+const APPS = [['msgs', '메시지', 'msg'], ['mail', '메일', 'mail'], ['gallery', '갤러리', 'pic'], ['clock', '시계', 'clock'], ['notes', '메모', 'note'], ['cal', '캘린더', 'cal']];
+const DOCK = [['calls', 'tel'], [null, 'cam'], ['maps', 'pin'], [null, 'set']];
+const TIME = { lock: '9:40', home: '9:40', msgs: '9:41', thread: '9:41', mail: '9:42', mailview: '9:42', calls: '9:42', gallery: '9:43', notes: '9:44', note: '9:44', cal: '9:45', clock: '9:45', maps: '9:46' };
 let D, EVENTS, THREADS, MAIL_BODY, ATT, CALLS;
 // 2026년 10월 달력 위젯 (오늘 = 24일, 매년 반복 일정은 점 + 목록으로 표시)
 function calWidget() {
@@ -36,6 +36,40 @@ function initPages() {
   dots.forEach((d, i) => (d.onclick = () => p.scrollTo({ left: i * p.clientWidth, behavior: 'smooth' })));
 }
 
+
+// ---- iOS 전화 앱 ----
+const PH = '<path d="M22 16.920v3a2 2 0 0 1-2.180 2 19.790 19.790 0 0 1-8.630-3.070 19.500 19.500 0 0 1-6-6 19.790 19.790 0 0 1-3.070-8.670A2 2 0 0 1 4.110 2h3a2 2 0 0 1 2 1.720 12.840 12.840 0 0 0 .7 2.810 2 2 0 0 1-.45 2.110L8.090 9.910a16 16 0 0 0 6 6l1.270-1.270a2 2 0 0 1 2.110-.45 12.840 12.840 0 0 0 2.810.7A2 2 0 0 1 22 16.920z" fill="#fff"/>';
+const TI = {
+  fav: '<path d="M12 3l2.700 5.600 6.100.9-4.400 4.300 1 6.100L12 17l-5.400 2.900 1-6.100L3.200 9.500l6.100-.9z"/>',
+  rec: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.500 2"/>',
+  con: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  key: '<g fill="currentColor" stroke="none"><circle cx="6" cy="5" r="1.800"/><circle cx="12" cy="5" r="1.800"/><circle cx="18" cy="5" r="1.800"/><circle cx="6" cy="11" r="1.800"/><circle cx="12" cy="11" r="1.800"/><circle cx="18" cy="11" r="1.800"/><circle cx="6" cy="17" r="1.800"/><circle cx="12" cy="17" r="1.800"/><circle cx="18" cy="17" r="1.800"/><circle cx="12" cy="22" r="1.800"/></g>',
+  vm: '<circle cx="7" cy="12" r="3.500"/><circle cx="17" cy="12" r="3.500"/><path d="M7 15.500h10"/>',
+};
+const TABS = [['fav', '즐겨찾기'], ['rec', '최근 기록'], ['con', '연락처'], ['key', '키패드'], ['vm', '음성 사서함']];
+const CONTACTS = ['재무 실장', '참모', '청년부 대표', '행정 실장'];
+const WD = '일월화수목금토';
+let dial = '';
+function tabs(on) {
+  return '<div class="tabs">' + TABS.map(([k, n]) => `<button class="${k === on ? 'on' : ''}" data-go="calls" data-a="${k}"><svg viewBox="0 0 24 24">${TI[k]}</svg>${n}</button>`).join('') + '</div>';
+}
+function phone(s, arg) {
+  if (s === 'dialing') return app(`<div class="dialing"><div class="dn">${arg}</div><div class="ds">발신 중...</div><div class="dbtns"><button class="cc end" data-go="calls" data-a="key"><svg viewBox="0 0 24 24" style="transform:rotate(135deg)">${PH}</svg></button></div></div>`);
+  if (s === 'call') {
+    const [n, d, t, m] = D.calls[arg], [mo, da] = d.match(/\d+/g), w = WD[new Date(2026, mo - 1, da).getDay()];
+    return app(`<button class="back" data-go="calls" data-a="rec">‹ 최근 기록</button><div class="scroll"><div class="cd"><span class="av big">${n[0]}</span><h2>${n}</h2></div><div class="acts">${['메시지', '음성', '영상', '메일'].map((x) => `<span><i></i>${x}</span>`).join('')}</div><div class="card"><div class="cl">${d} ${w}요일 ${t}</div><div class="cs">발신 전화 · ${m}</div></div><div class="card"><div class="cl">휴대전화</div><div class="cs">${n}</div></div></div>`);
+  }
+  const tab = arg || 'rec';
+  if (tab === 'key') {
+    const keys = [['1', ''], ['2', 'ABC'], ['3', 'DEF'], ['4', 'GHI'], ['5', 'JKL'], ['6', 'MNO'], ['7', 'PQRS'], ['8', 'TUV'], ['9', 'WXYZ'], ['*', ''], ['0', '+'], ['#', '']];
+    return app(`<div class="kp"><div class="num" id="num">${dial}</div><div class="add">${dial ? '번호 추가' : ''}</div><div class="kg">${keys.map(([k, l]) => `<button data-k="${k}"><b>${k}</b><small>${l}</small></button>`).join('')}<span></span><button class="cc" data-call><svg viewBox="0 0 24 24">${PH}</svg></button><button class="bs" data-bs>⌫</button></div></div>` + tabs('key'));
+  }
+  if (tab === 'con') return app('<div class="hd"><h1>연락처</h1></div><div class="scroll">' + CONTACTS.map((n) => `<div class="row" style="align-items:center;padding:12px 20px"><span class="av" style="width:40px;height:40px;font-size:16px">${n[0]}</span><span class="nm" style="font-weight:500">${n}</span></div>`).join('') + '</div>' + tabs('con'));
+  if (tab === 'fav') return app('<div class="hd"><h1>즐겨찾기</h1></div><div class="empty">즐겨찾기가 없습니다</div>' + tabs('fav'));
+  if (tab === 'vm') return app('<div class="hd"><h1>음성 사서함</h1></div><div class="empty">음성 사서함이 없습니다</div>' + tabs('vm'));
+  return app('<div class="hd" style="padding-bottom:6px"><h1>최근 기록</h1></div><div class="seg"><span class="on">전체</span><span>부재중</span></div><div class="scroll">' + D.calls.map(([n, d], i) => `<div class="row" style="align-items:center;padding:11px 20px"><span class="mid"><div class="nm" style="font-weight:600">${n}</div><div class="sn" style="color:#8f979f;font-size:13px">↗ 휴대전화</div></span><span class="dt">${d}</span><button class="ibtn" data-go="call" data-a="${i}">ⓘ</button></div>`).join('') + '</div>' + tabs('rec'));
+}
+
 let cur = 'lock';
 function status(s) { $('#clk').textContent = TIME[s] || '9:40'; }
 function layers(which) { for (const k of ['lock', 'pass', 'home', 'app', 'viewer']) $('#' + k).hidden = k !== which; }
@@ -50,17 +84,25 @@ function go(s, arg) {
     initPages();
     return layers('home');
   }
+  if (s === 'notes') return app('<div class="hd"><h1>메모</h1><p>메모 ' + D.notes.length + '개</p></div><div class="scroll">' + D.notes.map((n, i) => `<button class="row" data-go="note" data-a="${i}"><span class="mid"><div class="nm">${n.t}</div><div class="sn" style="color:#8f979f">${n.b.split('\n')[0]}</div></span><span class="dt">${n.d}</span></button>`).join('') + '</div>');
+  if (s === 'note') { const n = D.notes[arg]; return app(`<button class="back" data-go="notes">‹ 메모</button><div class="scroll" style="padding:14px 22px"><div class="when" style="margin:0 0 10px">${n.d}</div><h2 style="font-size:22px;margin-bottom:14px">${n.t}</h2><p style="white-space:pre-wrap;font-size:16px;line-height:1.65;color:#e4e7ea">${n.b}</p></div>`); }
+  if (s === 'cal') return app('<div class="hd"><h1>일정</h1><p>2026년 10월 24일 토요일</p></div><div class="scroll">' + D.cal.map((g) => `<div class="sec">${g.d}${g.l ? ' · ' + g.l : ''}</div>` + g.e.map(([t, n, r]) => `<div class="row" style="align-items:center"><span class="bar"></span><span class="mid"><div class="nm">${n}</div><div class="sn" style="color:#8f979f">${t}${r ? ' · ' + r : ''}</div></span></div>`).join('')).join('') + '</div>');
+  if (s === 'clock') return app('<div class="hd"><h1>알람</h1></div><div class="scroll">' + D.alarms.map(([t, n, r, on]) => `<div class="row" style="align-items:center"><span class="mid"><div style="font-size:44px;font-weight:300;color:${on ? '#fff' : '#6b7178'}">${t}</div><div class="sn" style="color:#8f979f">${n}, ${r}</div></span><button class="tg ${on ? 'on' : ''}" data-tg><i></i></button></div>`).join('') + '</div>');
+  if (s === 'maps') return app('<div class="hd"><h1>지도</h1><p>즐겨찾는 장소</p></div><div class="scroll">' + D.places.map(([n, d]) => `<div class="row" style="align-items:center"><span class="av" style="background:#3a9187">📍</span><span class="mid"><div class="nm">${n}</div><div class="sn" style="color:#8f979f">${d}</div></span></div>`).join('') + '</div>');
   if (s === 'msgs') return app('<div class="hd"><h1>메시지</h1><p>대화 3</p></div><div class="scroll">' + THREADS.map((x, i) => `<button class="row" data-go="thread" data-a="${i}"><span class="av">${x.n[0]}</span><span class="mid"><div class="nm">${x.n}</div><div class="sn">${x.t}</div></span><span class="dt">${x.d}</span></button>`).join('') + '</div>');
   if (s === 'thread') { const x = THREADS[arg]; return app(`<button class="back" data-go="msgs">‹ 메시지</button><div class="hd"><h1 style="font-size:20px;text-align:center">${x.n}</h1></div><div class="scroll">` + x.m.map((m) => `<div class="when">${m[0]}</div><div class="bubble ${m[2] ? 'me' : ''}">${m[1]}</div>`).join('') + '</div>'); }
   if (s === 'mail') return app(`<div class="hd"><h1>받은편지함</h1><p>읽지 않음 1</p></div><div class="scroll"><button class="mail" data-go="mailview"><div style="display:flex;justify-content:space-between"><b><span class="dot"></span>재무 실장</b><span class="dt">10월 23일 오후 11:18</span></div><div class="t">정치인 민현주 후견금 집행 내역 문서</div><div class="s">${MAIL_BODY}</div><div class="att"><span class="hw">HWPX</span><span>${ATT}</span></div></button><div class="sec" style="color:#5f666d">이전 메일 없음</div></div>`);
   if (s === 'mailview') return app(`<button class="back" data-go="mail">‹ 받은편지함</button><div class="scroll" style="padding:16px 20px"><div style="display:flex;justify-content:space-between"><b>재무 실장</b><span class="dt">10월 23일 오후 11:18</span></div><h2 style="font-size:19px;margin:14px 0">정치인 민현주 후견금 집행 내역 문서</h2><p style="font-size:15px;line-height:1.6;color:#d5d9dd">${MAIL_BODY}</p><div class="att"><span class="hw">HWPX</span><span>${ATT}</span></div></div>`);
-  if (s === 'calls') return app('<div class="hd"><h1>통화</h1></div><div class="sec" style="margin-top:6px">최근 기록</div><div class="scroll">' + CALLS.map(([n, d, t, m]) => `<div class="row call"><span class="av">↗</span><span class="mid"><div class="nm">${n}</div><div class="sn" style="color:#8f979f">발신 · ${m}</div></span><span class="dt">${d}<br>${t}</span></div>`).join('') + '</div>');
+  if (s === 'calls' || s === 'call' || s === 'dialing') return phone(s, arg);
   if (s === 'gallery') return app(`<div class="hd"><h1>갤러리</h1><p>청년부 앨범</p><p style="color:#fff;font-size:13px">즐겨찾기 ${D.photos.filter((p) => p.fav).length} · 청년부 2,184</p></div><div class="scroll"><div class="gal">` + D.photos.map((p, i) => `<button data-view="${i}"><img src="${p.src}" alt="">${p.fav ? '<span class="heart">♥</span>' : ''}</button>`).join('') + '</div></div>');
 }
 
 document.addEventListener('click', (e) => {
-  const t = e.target.closest('[data-go],[data-view],#fp,#hind,#viewer button,#pcancel');
+  const t = e.target.closest('[data-go],[data-tg],[data-k],[data-bs],[data-call],[data-view],#fp,#hind,#viewer button,#pcancel');
   if (t && t.id === 'pcancel') return go('lock');
+  if (t && (t.dataset.k !== undefined || t.dataset.bs !== undefined)) { dial = t.dataset.bs !== undefined ? dial.slice(0, -1) : (dial + t.dataset.k).slice(0, 15); $('#num').textContent = dial; document.querySelector('.add').textContent = dial ? '번호 추가' : ''; return; }
+  if (t && t.dataset.call !== undefined) return dial && go('dialing', dial);
+  if (t && t.dataset.tg !== undefined) return t.classList.toggle('on');
   if (!t) return;
   if (t.id === 'fp') { layers('pass'); $('#pw').focus(); return; }
   if (t.id === 'hind') return cur === 'lock' ? 0 : go('home');
