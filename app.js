@@ -51,7 +51,7 @@ function go(s, arg) {
   if (s === 'lock') return layers('lock');
   if (s === 'home') {
     const apps = '<div class="grid">' + APPS.map(([t, n, i]) => `<button class="ap" data-go="${t || ''}"><span class="ico">${ICON[i]}</span>${n}</button>`).join('') + '</div>';
-    $('#home').innerHTML = `<div class="pages" id="pages"><div class="pg">${apps}</div><div class="pg">${calWidget()}</div></div><div class="dots"><i class="on"></i><i></i></div><div class="dock">` + DOCK.map(([t, i]) => `<button data-go="${t || ''}"><span class="ico">${ICON[i]}</span></button>`).join('') + '</div>';
+    $('#home').innerHTML = `<div class="pages" id="pages"><div class="pg">${apps}</div><div class="pg">${calWidget()}</div></div><button class="pn l" data-pg="-1" aria-label="이전">‹</button><button class="pn r" data-pg="1" aria-label="다음">›</button><div class="dots"><i class="on"></i><i></i></div><div class="dock">` + DOCK.map(([t, i]) => `<button data-go="${t || ''}"><span class="ico">${ICON[i]}</span></button>`).join('') + '</div>';
     initPages();
     return layers('home');
   }
@@ -100,3 +100,11 @@ $('#pform').onsubmit = async (e) => {
 
 // 전원 버튼: 화면 끄기 / 켜면 잠금 화면(암호는 다시 입력)
 $('#pwr').onclick = () => { const off = $('#off'); if (off.hidden) off.hidden = false; else { off.hidden = true; $('#pw').value = ''; go('lock'); } };
+
+// PC: 방향키 ←/→ 또는 화면 양옆 화살표로 홈 화면 넘기기
+function page(dir) {
+  const p = $('#pages'); if (!p || $('#home').hidden) return;
+  p.scrollTo({ left: (Math.round(p.scrollLeft / p.clientWidth) + dir) * p.clientWidth, behavior: 'smooth' });
+}
+addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') page(1); else if (e.key === 'ArrowLeft') page(-1); });
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-pg]'); if (b) page(+b.dataset.pg); });
