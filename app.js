@@ -1,22 +1,46 @@
 const $ = (s) => document.querySelector(s);
 const ic = (d) => `<svg viewBox="0 0 24 24">${d}</svg>`;
-// Lucide 계열 선 아이콘 (증거 이미지와 동일한 스타일)
+// iOS 기본 앱 아이콘 (직접 그린 SVG, 60x60)
+const sv = (b) => `<svg viewBox="0 0 60 60">${b}</svg>`;
+const grad = (id, a, b) => `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="60" height="60" fill="url(#${id})"/>`;
+const petals = ['#ffd426', '#ff9f0a', '#ff453a', '#ff5fa0', '#bf5af2', '#5e7cff', '#32c8e6', '#34c759'].map((c, i) => `<ellipse cx="30" cy="19" rx="6.500" ry="11" fill="${c}" opacity=".8" style="mix-blend-mode:multiply" transform="rotate(${i * 45} 30 30)"/>`).join('');
+const ticks = Array.from({ length: 12 }, (_, i) => `<path d="M30 10v${i % 3 ? 2 : 4}" stroke="#111" stroke-width="${i % 3 ? 1 : 1.6}" transform="rotate(${i * 30} 30 30)"/>`).join('');
 const ICON = {
-  msg: ic('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'),
-  mail: ic('<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.970 5.700a1.940 1.940 0 0 1-2.060 0L2 7"/>'),
-  pic: ic('<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.090-3.090a2 2 0 0 0-2.830 0L6 21"/>'),
-  clock: ic('<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'),
-  note: ic('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M16 13H8M16 17H8"/>'),
-  cal: ic('<path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>'),
-  tel: ic('<path d="M22 16.920v3a2 2 0 0 1-2.180 2 19.790 19.790 0 0 1-8.630-3.070 19.500 19.500 0 0 1-6-6 19.790 19.790 0 0 1-3.070-8.670A2 2 0 0 1 4.110 2h3a2 2 0 0 1 2 1.720 12.840 12.840 0 0 0 .7 2.810 2 2 0 0 1-.45 2.110L8.090 9.910a16 16 0 0 0 6 6l1.270-1.270a2 2 0 0 1 2.110-.45 12.840 12.840 0 0 0 2.810.7A2 2 0 0 1 22 16.920z"/>'),
-  cam: ic('<rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.500" r="3"/>'),
-  pin: ic('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="2"/>'),
-  set: ic('<circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.930 4.930l1.410 1.410M17.660 17.660l1.410 1.410M2 12h2M20 12h2M6.340 17.660l-1.410 1.410M19.070 4.930l-1.410 1.410"/>'),
+  msg: sv(grad('g1', '#67f07f', '#0cbf2f') + '<ellipse cx="30" cy="28" rx="20" ry="15.500" fill="#fff"/><path d="M13 47c5-2 8-5 8-9l7 3z" fill="#fff"/>'),
+  mail: sv(grad('g2', '#3fb4ff', '#1566f0') + '<rect x="10" y="16" width="40" height="28" rx="4.500" fill="#fff"/><path d="M11.500 19l18.500 14 18.500-14" stroke="#2a7cf0" stroke-width="2.600" fill="none" stroke-linejoin="round"/>'),
+  pic: sv('<rect width="60" height="60" fill="#fff"/>' + petals),
+  clock: sv('<rect width="60" height="60" fill="#000"/><circle cx="30" cy="30" r="25" fill="#fff"/>' + ticks + '<path d="M30 30V16M30 30l9 5" stroke="#111" stroke-width="2.600" stroke-linecap="round"/><path d="M30 34V12" stroke="#ff9f0a" stroke-width="1.200"/><circle cx="30" cy="30" r="2" fill="#ff9f0a"/>'),
+  note: sv('<rect width="60" height="60" fill="#fff"/><rect width="60" height="17" fill="#ffd60a"/><path d="M8 28h44M8 38h44M8 48h44" stroke="#d6d6da" stroke-width="1.200"/>'),
+  cal: sv('<rect width="60" height="60" fill="#fff"/><text x="30" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#ff3b30">토</text><text x="30" y="49" text-anchor="middle" font-size="31" font-weight="300" fill="#111">24</text>'),
+  tel: sv(grad('g3', '#67f07f', '#0cbf2f') + '<g transform="translate(13 13) scale(1.580)" fill="#fff"><path d="M22 16.920v3a2 2 0 0 1-2.180 2 19.790 19.790 0 0 1-8.630-3.070 19.500 19.500 0 0 1-6-6 19.790 19.790 0 0 1-3.070-8.670A2 2 0 0 1 4.110 2h3a2 2 0 0 1 2 1.720 12.840 12.840 0 0 0 .7 2.810 2 2 0 0 1-.45 2.110L8.090 9.910a16 16 0 0 0 6 6l1.270-1.270a2 2 0 0 1 2.110-.45 12.840 12.840 0 0 0 2.810.7A2 2 0 0 1 22 16.920z"/></g>'),
+  cam: sv(grad('g4', '#d8d8dd', '#8e8e93') + '<path d="M12 22h8l3-5h14l3 5h8a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H12a3 3 0 0 1-3-3V25a3 3 0 0 1 3-3z" fill="#2c2c2e"/><circle cx="30" cy="33" r="9.500" fill="#8e8e93"/><circle cx="30" cy="33" r="7" fill="#1c1c1e"/>'),
+  pin: sv('<rect width="60" height="60" fill="#f2efe6"/><path d="M0 40L60 12v10L0 52z" fill="#fff"/><path d="M0 8h22v22H0z" fill="#bfe6a8"/><path d="M38 36h22v24H38z" fill="#9dd5f5"/><path d="M0 42L60 14" stroke="#ffcf4d" stroke-width="5"/><circle cx="31" cy="26" r="9" fill="#ff453a"/><circle cx="31" cy="26" r="3.500" fill="#fff"/>'),
+  set: sv(grad('g5', '#a9a9af', '#5d5d62') + '<circle cx="30" cy="30" r="15.500" fill="none" stroke="#e1e1e6" stroke-width="6.500" stroke-dasharray="6.100 6.100"/><circle cx="30" cy="30" r="14" fill="#e1e1e6"/><circle cx="30" cy="30" r="6" fill="#6e6e73"/>'),
 };
-const APPS = [['msgs', '메시지', 'msg', '#34a853'], ['mail', '메일', 'mail', '#3b72e0'], ['gallery', '갤러리', 'pic', '#d9714a'], [null, '시계', 'clock', '#4a5058'], [null, '메모', 'note', '#d6aa38'], [null, '캘린더', 'cal', '#c9473f']];
-const DOCK = [['calls', 'tel', '#2f9e56'], [null, 'cam', '#585e69'], [null, 'pin', '#3a9187'], [null, 'set', '#6b717b']];
+const APPS = [['msgs', '메시지', 'msg'], ['mail', '메일', 'mail'], ['gallery', '갤러리', 'pic'], [null, '시계', 'clock'], [null, '메모', 'note'], [null, '캘린더', 'cal']];
+const DOCK = [['calls', 'tel'], [null, 'cam'], [null, 'pin'], [null, 'set']];
 const TIME = { lock: '9:40', home: '9:40', msgs: '9:41', thread: '9:41', mail: '9:42', mailview: '9:42', calls: '9:42', gallery: '9:43' };
-let D, THREADS, MAIL_BODY, ATT, CALLS;
+let D, EVENTS, THREADS, MAIL_BODY, ATT, CALLS;
+// 2026년 10월 달력 위젯 (오늘 = 24일, 매년 반복 일정은 점 + 목록으로 표시)
+function calWidget() {
+  const Y = 2026, M = 10, T = 24, first = new Date(Y, M - 1, 1).getDay(), n = new Date(Y, M, 0).getDate();
+  const ev = EVENTS.filter((e) => e.m === M).map((e) => e.d);
+  let cells = '일월화수목금토'.split('').map((w) => `<b class="wd">${w}</b>`).join('') + '<i></i>'.repeat(first);
+  for (let d = 1; d <= n; d++) cells += `<span class="${d === T ? 'today' : ''}${ev.includes(d) ? ' ev' : ''}">${d}</span>`;
+  return `<div class="widget"><div class="wh"><b>${M}월</b><span>${Y}</span></div><div class="cg">${cells}</div>` +
+    EVENTS.map((e) => `<div class="we"><i></i><span>${e.m}월 ${e.d}일 · ${e.t}</span><em>${e.r}</em></div>`).join('') + '</div>';
+}
+function initPages() {
+  const p = $('#pages'), dots = document.querySelectorAll('.dots i');
+  p.onscroll = () => { const k = Math.round(p.scrollLeft / p.clientWidth); dots.forEach((d, i) => d.classList.toggle('on', i === k)); };
+  dots.forEach((d, i) => (d.onclick = () => p.scrollTo({ left: i * p.clientWidth, behavior: 'smooth' })));
+  // 마우스 드래그로도 넘기기 (터치는 기본 스크롤)
+  let x0, s0;
+  p.onpointerdown = (e) => { if (e.pointerType === 'mouse') { x0 = e.clientX; s0 = p.scrollLeft; p.style.scrollSnapType = 'none'; } };
+  p.onpointermove = (e) => { if (x0 != null) p.scrollLeft = s0 - (e.clientX - x0); };
+  addEventListener('pointerup', () => { if (x0 == null) return; const moved = Math.abs(p.scrollLeft - s0) > 5; x0 = null; p.style.scrollSnapType = ''; p.scrollTo({ left: Math.round(p.scrollLeft / p.clientWidth) * p.clientWidth, behavior: 'smooth' }); if (moved) addEventListener('click', (ev) => ev.stopPropagation(), { capture: true, once: true }); }, { once: true });
+}
+
 let cur = 'lock';
 function status(s) { $('#clk').textContent = TIME[s] || '9:40'; }
 function layers(which) { for (const k of ['lock', 'pass', 'home', 'app', 'viewer']) $('#' + k).hidden = k !== which; }
@@ -26,7 +50,9 @@ function go(s, arg) {
   cur = s; status(s);
   if (s === 'lock') return layers('lock');
   if (s === 'home') {
-    $('#home').innerHTML = '<div class="grid">' + APPS.map(([t, n, i, c]) => `<button class="ap" data-go="${t || ''}"><span class="ico" style="background:${c}">${ICON[i]}</span>${n}</button>`).join('') + '</div><div class="dock">' + DOCK.map(([t, i, c]) => `<button data-go="${t || ''}"><span class="ico" style="background:${c}">${ICON[i]}</span></button>`).join('') + '</div>';
+    const apps = '<div class="grid">' + APPS.map(([t, n, i]) => `<button class="ap" data-go="${t || ''}"><span class="ico">${ICON[i]}</span>${n}</button>`).join('') + '</div>';
+    $('#home').innerHTML = `<div class="pages" id="pages"><div class="pg">${apps}</div><div class="pg">${calWidget()}</div></div><div class="dots"><i class="on"></i><i></i></div><div class="dock">` + DOCK.map(([t, i]) => `<button data-go="${t || ''}"><span class="ico">${ICON[i]}</span></button>`).join('') + '</div>';
+    initPages();
     return layers('home');
   }
   if (s === 'msgs') return app('<div class="hd"><h1>메시지</h1><p>대화 3</p></div><div class="scroll">' + THREADS.map((x, i) => `<button class="row" data-go="thread" data-a="${i}"><span class="av">${x.n[0]}</span><span class="mid"><div class="nm">${x.n}</div><div class="sn">${x.t}</div></span><span class="dt">${x.d}</span></button>`).join('') + '</div>');
@@ -63,7 +89,7 @@ $('#pform').onsubmit = async (e) => {
     const km = await crypto.subtle.importKey('raw', new TextEncoder().encode($('#pw').value), 'PBKDF2', false, ['deriveKey']);
     const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(ENC.salt), iterations: ENC.iter, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
     D = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(ENC.iv) }, key, b64(ENC.ct))));
-    ({ threads: THREADS, mailBody: MAIL_BODY, att: ATT, calls: CALLS } = D);
+    ({ events: EVENTS, threads: THREADS, mailBody: MAIL_BODY, att: ATT, calls: CALLS } = D);
     $('#pw').value = ''; return go('home');
   } catch {
     const f = $('#pform'); f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake');
