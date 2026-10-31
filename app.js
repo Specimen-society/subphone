@@ -95,10 +95,3 @@ $('#pform').onsubmit = async (e) => {
 
 // 전원 버튼: 화면 끄기 / 켜면 잠금 화면(암호는 다시 입력)
 $('#pwr').onclick = () => { const off = $('#off'); if (off.hidden) off.hidden = false; else { off.hidden = true; $('#pw').value = ''; go('lock'); } };
-
-// PC: 방향키 ←/→ 로 홈 화면 넘기기 (스와이프는 터치 전용)
-function page(dir) {
-  const p = $('#pages'); if (!p || $('#home').hidden) return;
-  p.scrollTo({ left: (Math.round(p.scrollLeft / p.clientWidth) + dir) * p.clientWidth, behavior: 'smooth' });
-}
-addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') page(1); else if (e.key === 'ArrowLeft') page(-1); });
