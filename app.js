@@ -64,7 +64,7 @@ document.addEventListener('click', (e) => {
   if (!t) return;
   if (t.id === 'fp') { layers('pass'); $('#pw').focus(); return; }
   if (t.id === 'hind') return cur === 'lock' ? 0 : go('home');
-  if (t.dataset.view !== undefined) { const i = +t.dataset.view, p = D.photos[i], nm = (p.name ? p.name + '_사진' : 'IMG_' + String(i + 1).padStart(4, '0')) + '.jpg'; $('#viewer').innerHTML = `<button>‹ 갤러리</button><img src="${p.src}" alt=""><div class="info"><b>${nm}</b><span>${p.fav ? '<i class="fv">♥</i> 즐겨찾기 · ' : ''}청년부 앨범</span></div>`; return layers('viewer'); }
+  if (t.dataset.view !== undefined) { const i = +t.dataset.view, p = D.photos[i], nm = 'IMG_' + String(i + 1).padStart(4, '0') + '_' + p.name + '.JPG'; $('#viewer').innerHTML = `<button>‹ 갤러리</button><img src="${p.src}" alt=""><div class="info"><b>${nm}</b><span>${p.fav ? '<i class="fv">♥</i> 즐겨찾기 · ' : ''}청년부 앨범</span></div>`; return layers('viewer'); }
   if (t.closest('#viewer')) return layers('app');
   if (!t.dataset.go) { t.classList.remove('shake'); void t.offsetWidth; t.classList.add('shake'); return; }
   go(t.dataset.go, t.dataset.a);
