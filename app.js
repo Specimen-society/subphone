@@ -34,11 +34,6 @@ function initPages() {
   const p = $('#pages'), dots = document.querySelectorAll('.dots i');
   p.onscroll = () => { const k = Math.round(p.scrollLeft / p.clientWidth); dots.forEach((d, i) => d.classList.toggle('on', i === k)); };
   dots.forEach((d, i) => (d.onclick = () => p.scrollTo({ left: i * p.clientWidth, behavior: 'smooth' })));
-  // 마우스 드래그로도 넘기기 (터치는 기본 스크롤)
-  let x0, s0;
-  p.onpointerdown = (e) => { if (e.pointerType === 'mouse') { x0 = e.clientX; s0 = p.scrollLeft; p.style.scrollSnapType = 'none'; } };
-  p.onpointermove = (e) => { if (x0 != null) p.scrollLeft = s0 - (e.clientX - x0); };
-  addEventListener('pointerup', () => { if (x0 == null) return; const moved = Math.abs(p.scrollLeft - s0) > 5; x0 = null; p.style.scrollSnapType = ''; p.scrollTo({ left: Math.round(p.scrollLeft / p.clientWidth) * p.clientWidth, behavior: 'smooth' }); if (moved) addEventListener('click', (ev) => ev.stopPropagation(), { capture: true, once: true }); }, { once: true });
 }
 
 let cur = 'lock';
@@ -51,7 +46,7 @@ function go(s, arg) {
   if (s === 'lock') return layers('lock');
   if (s === 'home') {
     const apps = '<div class="grid">' + APPS.map(([t, n, i]) => `<button class="ap" data-go="${t || ''}"><span class="ico">${ICON[i]}</span>${n}</button>`).join('') + '</div>';
-    $('#home').innerHTML = `<div class="pages" id="pages"><div class="pg">${apps}</div><div class="pg">${calWidget()}</div></div><button class="pn l" data-pg="-1" aria-label="이전">‹</button><button class="pn r" data-pg="1" aria-label="다음">›</button><div class="dots"><i class="on"></i><i></i></div><div class="dock">` + DOCK.map(([t, i]) => `<button data-go="${t || ''}"><span class="ico">${ICON[i]}</span></button>`).join('') + '</div>';
+    $('#home').innerHTML = `<div class="pages" id="pages"><div class="pg">${apps}</div><div class="pg">${calWidget()}</div></div><div class="dots"><i class="on"></i><i></i></div><div class="dock">` + DOCK.map(([t, i]) => `<button data-go="${t || ''}"><span class="ico">${ICON[i]}</span></button>`).join('') + '</div>';
     initPages();
     return layers('home');
   }
@@ -101,10 +96,9 @@ $('#pform').onsubmit = async (e) => {
 // 전원 버튼: 화면 끄기 / 켜면 잠금 화면(암호는 다시 입력)
 $('#pwr').onclick = () => { const off = $('#off'); if (off.hidden) off.hidden = false; else { off.hidden = true; $('#pw').value = ''; go('lock'); } };
 
-// PC: 방향키 ←/→ 또는 화면 양옆 화살표로 홈 화면 넘기기
+// PC: 방향키 ←/→ 로 홈 화면 넘기기 (스와이프는 터치 전용)
 function page(dir) {
   const p = $('#pages'); if (!p || $('#home').hidden) return;
   p.scrollTo({ left: (Math.round(p.scrollLeft / p.clientWidth) + dir) * p.clientWidth, behavior: 'smooth' });
 }
 addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') page(1); else if (e.key === 'ArrowLeft') page(-1); });
-document.addEventListener('click', (e) => { const b = e.target.closest('[data-pg]'); if (b) page(+b.dataset.pg); });
