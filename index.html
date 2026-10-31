@@ -5,11 +5,12 @@
 <title>제우스의 서브폰</title>
 <link rel="stylesheet" href="style.css"></head>
 <body>
-<div id="phone"><div id="screen">
-  <div id="status"><span id="clk">9:40</span><span class="sr">LTE <b class="bat"><i></i><i></i><i></i></b> 34%</span></div>
+<div id="phone"><i class="sb act"></i><i class="sb vup"></i><i class="sb vdn"></i><i class="sb pwr"></i><div id="screen">
+  <div id="status"><span id="clk">9:40</span><span class="sr">LTE<svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.800" fill="none" stroke="#fff" opacity=".45"/><rect x="2" y="2" width="8" height="9" rx="2.200" fill="#fff"/><path d="M25 4.500v4c.8-.3 1.500-1.100 1.500-2s-.7-1.700-1.500-2z" fill="#fff" opacity=".45"/></svg>34%</span></div>
   <div id="island"></div>
   <section id="lock" class="layer"><div class="ld">10월 24일</div><div class="lt">09:40</div>
     <button id="fp" aria-label="지문으로 잠금 해제"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 20a14 14 0 0128 0M15 38c-2-4-3-8-3-12a12 12 0 0124 0c0 4 0 8 2 12M19 40c-1-4-2-8-2-14a7 7 0 0114 0c0 5 1 9 3 12M24 42c-1-5-2-9-2-16a2 2 0 014 0c0 6 2 10 4 13"/></svg></button>
+    <button class="lkb l" aria-label="손전등"><svg viewBox="0 0 24 24"><path d="M8 2h8v4l-2 3v2h-4V9L8 6V2zm2 11h4v9h-4z" fill="#fff"/></svg></button><button class="lkb r" aria-label="카메라"><svg viewBox="0 0 24 24"><path d="M9 5l-1.500 2H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-2.500L15 5H9zm3 4a4.500 4.500 0 110 9 4.500 4.500 0 010-9z" fill="#fff"/></svg></button>
     <div class="lh">지문으로 잠금 해제</div></section>
   <section id="pass" class="layer" hidden><div class="pt">암호 입력</div>
     <form id="pform"><input id="pw" type="password" autocomplete="off" aria-label="암호"><button>→</button></form>

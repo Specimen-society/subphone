@@ -1,16 +1,17 @@
 const $ = (s) => document.querySelector(s);
 const ic = (d) => `<svg viewBox="0 0 24 24">${d}</svg>`;
+// Lucide 계열 선 아이콘 (증거 이미지와 동일한 스타일)
 const ICON = {
-  msg: ic('<path d="M4 5h16v11H9l-5 4z"/>'),
-  mail: ic('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
-  pic: ic('<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.500" cy="9.500" r="1.500"/><path d="M4 18l5-5 4 4 3-3 4 4"/>'),
-  clock: ic('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
-  note: ic('<path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h7"/>'),
-  cal: ic('<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/>'),
-  tel: ic('<path d="M5 4h4l2 5-2.500 1.500a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z"/>'),
-  cam: ic('<rect x="3" y="7" width="18" height="12" rx="3"/><circle cx="12" cy="13" r="3"/>'),
-  pin: ic('<path d="M12 21s-6-6-6-11a6 6 0 0112 0c0 5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/>'),
-  set: ic('<circle cx="12" cy="12" r="3.500"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'),
+  msg: ic('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'),
+  mail: ic('<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.970 5.700a1.940 1.940 0 0 1-2.060 0L2 7"/>'),
+  pic: ic('<rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.090-3.090a2 2 0 0 0-2.830 0L6 21"/>'),
+  clock: ic('<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>'),
+  note: ic('<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M16 13H8M16 17H8"/>'),
+  cal: ic('<path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>'),
+  tel: ic('<path d="M22 16.920v3a2 2 0 0 1-2.180 2 19.790 19.790 0 0 1-8.630-3.070 19.500 19.500 0 0 1-6-6 19.790 19.790 0 0 1-3.070-8.670A2 2 0 0 1 4.110 2h3a2 2 0 0 1 2 1.720 12.840 12.840 0 0 0 .7 2.810 2 2 0 0 1-.45 2.110L8.090 9.910a16 16 0 0 0 6 6l1.270-1.270a2 2 0 0 1 2.110-.45 12.840 12.840 0 0 0 2.810.7A2 2 0 0 1 22 16.920z"/>'),
+  cam: ic('<rect x="2" y="6" width="20" height="13" rx="2"/><circle cx="12" cy="12.500" r="3"/>'),
+  pin: ic('<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="2"/>'),
+  set: ic('<circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.930 4.930l1.410 1.410M17.660 17.660l1.410 1.410M2 12h2M20 12h2M6.340 17.660l-1.410 1.410M19.070 4.930l-1.410 1.410"/>'),
 };
 const APPS = [['msgs', '메시지', 'msg', '#34a853'], ['mail', '메일', 'mail', '#3b72e0'], ['gallery', '갤러리', 'pic', '#d9714a'], [null, '시계', 'clock', '#4a5058'], [null, '메모', 'note', '#d6aa38'], [null, '캘린더', 'cal', '#c9473f']];
 const DOCK = [['calls', 'tel', '#2f9e56'], [null, 'cam', '#585e69'], [null, 'pin', '#3a9187'], [null, 'set', '#6b717b']];
@@ -49,7 +50,7 @@ document.addEventListener('click', (e) => {
 });
 
 // shrink the frame to fit short desktop windows
-function fit() { const k = Math.min(1, (innerHeight - 16) / 872, (innerWidth - 16) / 413); $('#phone').style.transform = k < 1 ? `scale(${k})` : ''; }
+function fit() { const k = Math.min(1, (innerHeight - 16) / 892, (innerWidth - 16) / 420); $('#phone').style.transform = k < 1 ? `scale(${k})` : ''; }
 addEventListener('resize', fit); fit();
 
 // 암호로 data.enc.json 복호화 (내용은 암호 없이는 소스에서도 볼 수 없음)
