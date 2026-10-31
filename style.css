@@ -51,13 +51,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .hw{background:#2f6fd6;border-radius:8px;width:34px;height:34px;display:grid;place-items:center;font-size:9px;font-weight:800;flex:none}
 .sec{font-size:12px;color:#8f979f;padding:14px 20px 8px}
 .call .av{color:#4cd37b}
-.gal{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:0 4px 30px}
-.gal button{aspect-ratio:3/4;background:#222;overflow:hidden;position:relative;padding:0}
-.gal button:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
-.gal img{width:100%;height:100%;object-fit:cover;display:block}
-.heart{position:absolute;right:10px;bottom:30px;color:#ff3b4a;font-size:20px}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;padding:0 0 30px}
+.gal button{aspect-ratio:1;background:#222;overflow:hidden;position:relative;padding:0}
+.gal img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
+.heart{position:absolute;left:7px;bottom:5px;color:#ff3b4a;font-size:17px;text-shadow:0 0 4px rgba(0,0,0,.5)}
 #viewer{background:#000;z-index:25;display:flex;align-items:center;justify-content:center}
-#viewer img{width:100%;height:80%;object-fit:contain}#viewer button{position:absolute;top:62px;left:20px;color:#5a9bff;font-size:16px}
+#viewer img{width:100%;height:68%;object-fit:contain;margin-top:-40px}#viewer button{position:absolute;top:62px;left:20px;color:#5a9bff;font-size:16px}
 .shake{animation:sh .3s}@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 /* small screens: no frame, full screen */
 @media (max-width:480px){
@@ -85,3 +84,5 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (pointer:fine){.pages{overflow-x:hidden}}
 /* iOS처럼 스크롤바 숨김 (스크롤은 그대로 동작) */
 *{scrollbar-width:none}*::-webkit-scrollbar{display:none}
+.info{position:absolute;left:0;right:0;bottom:0;padding:18px 24px 44px;background:rgba(28,31,35,.92);border-radius:22px 22px 0 0;display:flex;flex-direction:column;gap:5px}
+.info b{font-size:16px}.info span{font-size:13px;color:#aab1b8}.fv{color:#ff3b4a;font-style:normal}

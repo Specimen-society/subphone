@@ -55,7 +55,7 @@ function go(s, arg) {
   if (s === 'mail') return app(`<div class="hd"><h1>받은편지함</h1><p>읽지 않음 1</p></div><div class="scroll"><button class="mail" data-go="mailview"><div style="display:flex;justify-content:space-between"><b><span class="dot"></span>재무 실장</b><span class="dt">10월 23일 오후 11:18</span></div><div class="t">정치인 민현주 후견금 집행 내역 문서</div><div class="s">${MAIL_BODY}</div><div class="att"><span class="hw">HWPX</span><span>${ATT}</span></div></button><div class="sec" style="color:#5f666d">이전 메일 없음</div></div>`);
   if (s === 'mailview') return app(`<button class="back" data-go="mail">‹ 받은편지함</button><div class="scroll" style="padding:16px 20px"><div style="display:flex;justify-content:space-between"><b>재무 실장</b><span class="dt">10월 23일 오후 11:18</span></div><h2 style="font-size:19px;margin:14px 0">정치인 민현주 후견금 집행 내역 문서</h2><p style="font-size:15px;line-height:1.6;color:#d5d9dd">${MAIL_BODY}</p><div class="att"><span class="hw">HWPX</span><span>${ATT}</span></div></div>`);
   if (s === 'calls') return app('<div class="hd"><h1>통화</h1></div><div class="sec" style="margin-top:6px">최근 기록</div><div class="scroll">' + CALLS.map(([n, d, t, m]) => `<div class="row call"><span class="av">↗</span><span class="mid"><div class="nm">${n}</div><div class="sn" style="color:#8f979f">발신 · ${m}</div></span><span class="dt">${d}<br>${t}</span></div>`).join('') + '</div>');
-  if (s === 'gallery') return app('<div class="hd"><h1>갤러리</h1><p>청년부 앨범</p><p style="color:#fff;font-size:13px">즐겨찾기 1 · 청년부 2,184</p></div><div class="scroll"><div class="gal">' + D.imgs.map((src, i) => `<button data-view="${i}"><img src="${src}" alt="">${i ? '' : '<span class="heart">♥</span>'}</button>`).join('') + '</div></div>');
+  if (s === 'gallery') return app(`<div class="hd"><h1>갤러리</h1><p>청년부 앨범</p><p style="color:#fff;font-size:13px">즐겨찾기 ${D.photos.filter((p) => p.fav).length} · 청년부 2,184</p></div><div class="scroll"><div class="gal">` + D.photos.map((p, i) => `<button data-view="${i}"><img src="${p.src}" alt="">${p.fav ? '<span class="heart">♥</span>' : ''}</button>`).join('') + '</div></div>');
 }
 
 document.addEventListener('click', (e) => {
@@ -64,7 +64,7 @@ document.addEventListener('click', (e) => {
   if (!t) return;
   if (t.id === 'fp') { layers('pass'); $('#pw').focus(); return; }
   if (t.id === 'hind') return cur === 'lock' ? 0 : go('home');
-  if (t.dataset.view !== undefined) { $('#viewer').innerHTML = `<button>‹ 갤러리</button><img src="${D.imgs[t.dataset.view]}" alt="">`; return layers('viewer'); }
+  if (t.dataset.view !== undefined) { const i = +t.dataset.view, p = D.photos[i], nm = (p.name ? p.name + '_사진' : 'IMG_' + String(i + 1).padStart(4, '0')) + '.jpg'; $('#viewer').innerHTML = `<button>‹ 갤러리</button><img src="${p.src}" alt=""><div class="info"><b>${nm}</b><span>${p.fav ? '<i class="fv">♥</i> 즐겨찾기 · ' : ''}청년부 앨범</span></div>`; return layers('viewer'); }
   if (t.closest('#viewer')) return layers('app');
   if (!t.dataset.go) { t.classList.remove('shake'); void t.offsetWidth; t.classList.add('shake'); return; }
   go(t.dataset.go, t.dataset.a);
