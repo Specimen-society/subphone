@@ -103,7 +103,7 @@ const acts = (name) => {
 };
 function phone(s, arg) {
   if (s === 'dialing') return app(`<div class="dialing"><div class="dn">${arg}</div><div class="ds" id="ds">발신 중...</div><div class="dgrid">${['소리 끔', '키패드', '스피커', '통화 추가', 'FaceTime', '연락처'].map((x) => `<span>${x}</span>`).join('')}</div><div class="caps" id="caps"></div><div class="dbtns"><button class="cc end" data-end><svg viewBox="0 0 24 24" style="transform:rotate(135deg)">${PH}</svg></button></div></div>`);
-  if (s === 'contact') return app(`<button class="back" data-go="calls" data-a="con">‹ 연락처</button><div class="scroll"><div class="cd"><span class="av big">${arg[0]}</span><h2>${arg}</h2></div>${acts(arg)}</div>`);
+  if (s === 'contact') return app(`<button class="back" data-go="calls" data-a="con">‹ 연락처</button><div class="scroll"><div class="cd"><span class="av big">${arg[0]}</span><h2>${arg}</h2></div>${acts(arg)}<div class="card"><div class="cl">휴대전화</div><div class="cs">${arg}</div></div><div class="card" style="padding:4px 16px">${D.calls.map((c, i) => c.n === arg ? `<button class="row" data-go="call" data-a="${i}" style="padding:10px 0;width:100%"><span class="mid"><div class="nm" style="font-weight:500">${c.dir === 'in' ? '↙ 수신' : '↗ 발신'} · ${c.m}</div><div class="sn" style="color:#8f979f;font-size:13px">${c.d} ${c.t}</div></span></button>` : '').join('') || '<div class="cs" style="padding:10px 0">통화 기록 없음</div>'}</div></div>`);
   if (s === 'call') {
     const c = D.calls[arg], [mo, da] = c.d.match(/\d+/g), w = WD[new Date(2026, mo - 1, da).getDay()];
     const tr = c.rec ? `<div class="card"><div class="cl" style="margin-bottom:8px">통화 내용</div>${c.rec.map(([n, t]) => `<div class="tl"><b>${n}</b>${t}</div>`).join('')}</div>` : '';
