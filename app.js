@@ -96,7 +96,11 @@ function endCall() {
   }
   go('calls', c.from || 'rec');
 }
-const acts = (name) => `<div class="acts"><span><i></i>메시지</span><button data-dial="${name}"><i><svg viewBox="0 0 24 24" style="width:26px;height:26px">${PH.replace('fill="#fff"', 'fill="#0a84ff"')}</svg></i>음성</button><span><i></i>영상</span><span><i></i>메일</span></div>`;
+const acts = (name) => {
+  const ic = (p) => `<svg viewBox="0 0 24 24" style="width:26px;height:26px;fill:none;stroke:#0a84ff;stroke-width:1.8;stroke-linejoin:round">${p}</svg>`;
+  const ti = THREADS.findIndex((x) => x.n === name);
+  return `<div class="acts"><button data-go="${ti < 0 ? 'msgs' : 'thread'}" data-a="${ti}"><i>${ic('<path d="M12 4C7 4 3 7.300 3 11.500c0 2.300 1.200 4.300 3 5.700L5 21l4.200-2.200c.9.200 1.800.3 2.800.3 5 0 9-3.300 9-7.500S17 4 12 4z"/>')}</i>메시지</button><button data-dial="${name}"><i><svg viewBox="0 0 24 24" style="width:26px;height:26px">${PH.replace('fill="#fff"', 'fill="#0a84ff"')}</svg></i>음성</button><button><i>${ic('<rect x="2.500" y="6" width="13" height="12" rx="3"/><path d="M15.500 10.500l6-3.500v10l-6-3.500z"/>')}</i>영상</button><button data-go="mail"><i>${ic('<rect x="3" y="5.500" width="18" height="13" rx="2.500"/><path d="M3.500 7.500l8.500 6 8.500-6"/>')}</i>메일</button></div>`;
+};
 function phone(s, arg) {
   if (s === 'dialing') return app(`<div class="dialing"><div class="dn">${arg}</div><div class="ds" id="ds">발신 중...</div><div class="dgrid">${['소리 끔', '키패드', '스피커', '통화 추가', 'FaceTime', '연락처'].map((x) => `<span>${x}</span>`).join('')}</div><div class="caps" id="caps"></div><div class="dbtns"><button class="cc end" data-end><svg viewBox="0 0 24 24" style="transform:rotate(135deg)">${PH}</svg></button></div></div>`);
   if (s === 'contact') return app(`<button class="back" data-go="calls" data-a="con">‹ 연락처</button><div class="scroll"><div class="cd"><span class="av big">${arg[0]}</span><h2>${arg}</h2></div>${acts(arg)}</div>`);
