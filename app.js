@@ -68,10 +68,7 @@ function beep(freqs, dur, at = 0, vol = 0.1) {
   } catch {}
 }
 const dtmf = (k) => { const i = '123456789*0#'.indexOf(k); if (i >= 0) beep([[697, 770, 852, 941][(i / 3) | 0], [1209, 1336, 1477][i % 3]], 0.12); };
-function say(text, A) {
-  try { if (!/[가-힣]/.test(text)) return; const u = new SpeechSynthesisUtterance(text.replace(/…/g, '')); u.lang = 'ko-KR'; u.pitch = A.pitch; u.rate = A.rate; speechSynthesis.speak(u); } catch {}
-}
-function stopCall() { CT.forEach((t) => { clearTimeout(t); clearInterval(t); }); CT = []; try { speechSynthesis.cancel(); } catch {} }
+function stopCall() { CT.forEach((t) => { clearTimeout(t); clearInterval(t); }); CT = []; }
 // 발신: 신호음 2회 → 상대가 받고 짧게 반응한 뒤 끊음 (사람마다 말투만 다름)
 function startCall(name, from) {
   stopCall(); CALL = { name, from, t0: 0, lines: [] };
@@ -85,7 +82,7 @@ function startCall(name, from) {
     const ds = $('#ds'), tick = () => { const s = Math.floor((Date.now() - CALL.t0) / 1000); ds.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
     tick(); CT.push(setInterval(tick, 500));
     let at = 700;
-    A.lines.forEach((ln) => { later(() => { const c = $('#caps'); if (c) c.insertAdjacentHTML('beforeend', `<div class="cap">${ln}</div>`); CALL.lines.push([name, ln]); say(ln, A); }, at); at += ln === '…' ? 900 : 900 + ln.length * 130; });
+    A.lines.forEach((ln) => { later(() => { const c = $('#caps'); if (c) c.insertAdjacentHTML('beforeend', `<div class="cap">${ln}</div>`); CALL.lines.push([name, ln]); }, at); at += ln === '…' ? 900 : 900 + ln.length * 130; });
     later(() => { ds.textContent = '통화 종료'; hangBeeps(); later(endCall, 1400); }, at + 400);
   }, ans);
 }
