@@ -23,9 +23,9 @@ const T0 = Date.now(); // 시계는 9:40에서 시작해 실제 시간처럼 흐
 const hm = () => { const m = 9 * 60 + 40 + Math.floor((Date.now() - T0) / 60000); return [Math.floor(m / 60) % 24, m % 60]; };
 const p2 = (n) => String(n).padStart(2, '0');
 let D, EVENTS, THREADS, MAIL_BODY, ATT, CALLS;
-// 2026년 11월 달력 위젯 (오늘 = 14일, 매년 반복 일정은 점 + 목록으로 표시)
+// 2026년 10월 달력 위젯 (오늘 = 24일, 매년 반복 일정은 점 + 목록으로 표시)
 function calWidget() {
-  const Y = 2026, M = 11, T = 14, first = new Date(Y, M - 1, 1).getDay(), n = new Date(Y, M, 0).getDate();
+  const Y = 2026, M = 10, T = 24, first = new Date(Y, M - 1, 1).getDay(), n = new Date(Y, M, 0).getDate();
   const ev = EVENTS.filter((e) => e.m === M).map((e) => e.d);
   let cells = '일월화수목금토'.split('').map((w) => `<b class="wd">${w}</b>`).join('') + '<i></i>'.repeat(first);
   for (let d = 1; d <= n; d++) cells += `<span class="${d === T ? 'today' : ''}${ev.includes(d) ? ' ev' : ''}">${d}</span>`;
@@ -92,7 +92,7 @@ function endCall() {
   const c = CALL; CALL = null;
   if (c.t0) {
     const s = Math.max(1, Math.round((Date.now() - c.t0) / 1000));
-    D.calls.unshift({ n: c.name, d: '11월 14일', t: (([h, m]) => (h < 12 ? '오전 ' : '오후 ') + (h % 12 || 12) + ':' + p2(m))(hm()), m: s + '초', dir: 'out', rec: c.lines.filter((l) => l[1] !== '…').map(([n, t]) => [n, t]) });
+    D.calls.unshift({ n: c.name, d: '10월 24일', t: (([h, m]) => (h < 12 ? '오전 ' : '오후 ') + (h % 12 || 12) + ':' + p2(m))(hm()), m: s + '초', dir: 'out', rec: c.lines.filter((l) => l[1] !== '…').map(([n, t]) => [n, t]) });
   }
   go('calls', c.from || 'rec');
 }
@@ -138,7 +138,7 @@ function go(s, arg) {
   }
   if (s === 'notes') return app('<div class="hd"><h1>메모</h1><p>메모 ' + D.notes.length + '개</p></div><div class="scroll">' + D.notes.map((n, i) => `<button class="row" data-go="note" data-a="${i}"><span class="mid"><div class="nm">${n.t}</div><div class="sn" style="color:#8f979f">${n.b.split('\n')[0]}</div></span><span class="dt">${n.d}</span></button>`).join('') + '</div>');
   if (s === 'note') { const n = D.notes[arg]; return app(`<button class="back" data-go="notes">‹ 메모</button><div class="scroll" style="padding:14px 22px"><div class="when" style="margin:0 0 10px">${n.d}</div><h2 style="font-size:22px;margin-bottom:14px">${n.t}</h2><p style="white-space:pre-wrap;font-size:16px;line-height:1.65;color:#e4e7ea">${n.b}</p></div>`); }
-  if (s === 'cal') return app('<div class="hd"><h1>일정</h1><p>2026년 11월 14일 토요일</p></div><div class="scroll">' + D.cal.map((g) => `<div class="sec">${g.d}${g.l ? ' · ' + g.l : ''}</div>` + g.e.map(([t, n, r]) => `<div class="row" style="align-items:center"><span class="bar"></span><span class="mid"><div class="nm">${n}</div><div class="sn" style="color:#8f979f">${t}${r ? ' · ' + r : ''}</div></span></div>`).join('')).join('') + '</div>');
+  if (s === 'cal') return app('<div class="hd"><h1>일정</h1><p>2026년 10월 24일 토요일</p></div><div class="scroll">' + D.cal.map((g) => `<div class="sec">${g.d}${g.l ? ' · ' + g.l : ''}</div>` + g.e.map(([t, n, r]) => `<div class="row" style="align-items:center"><span class="bar"></span><span class="mid"><div class="nm">${n}</div><div class="sn" style="color:#8f979f">${t}${r ? ' · ' + r : ''}</div></span></div>`).join('')).join('') + '</div>');
   if (s === 'clock') return app('<div class="hd"><h1>알람</h1></div><div class="scroll">' + D.alarms.map(([t, n, r, on]) => `<div class="row" style="align-items:center"><span class="mid"><div style="font-size:44px;font-weight:300;color:${on ? '#fff' : '#6b7178'}">${t}</div><div class="sn" style="color:#8f979f">${n}, ${r}</div></span><button class="tg ${on ? 'on' : ''}" data-tg><i></i></button></div>`).join('') + '</div>');
   if (s === 'maps') return app('<div class="hd"><h1>지도</h1><p>즐겨찾는 장소</p></div><div class="scroll">' + D.places.map(([n, d]) => `<div class="row" style="align-items:center"><span class="av" style="background:#3a9187">📍</span><span class="mid"><div class="nm">${n}</div><div class="sn" style="color:#8f979f">${d}</div></span></div>`).join('') + '</div>');
   if (s === 'msgs') return app(`<div class="mh"><span>편집</span><button class="cmp"><svg viewBox="0 0 24 24"><path d="M12 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-6M18 3.500a2 2 0 112.800 2.800L12 15l-4 1 1-4z"/></svg></button></div><div class="hd" style="padding-top:2px"><h1>메시지</h1></div><div class="srch"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.500"/><path d="M16 16l4 4"/></svg>검색</div><div class="scroll">` + THREADS.map((x, i) => `<button class="mrow" data-go="thread" data-a="${i}"><span class="ud">${x.m[x.m.length - 1][2] ? '' : '<b></b>'}</span><span class="av">${x.n[0]}</span><span class="mid"><span class="mt"><span class="nm">${x.n}</span><span class="dt">${x.d} ›</span></span><div class="sn2">${x.t}</div></span></button>`).join('') + '</div>');
