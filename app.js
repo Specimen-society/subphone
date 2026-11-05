@@ -22,7 +22,7 @@ const DOCK = [['calls', 'tel'], [null, 'cam'], ['maps', 'pin'], [null, 'set']];
 const T0 = Date.now(); // 시계는 9:40에서 시작해 실제 시간처럼 흐른다
 const hm = () => { const m = 9 * 60 + 40 + Math.floor((Date.now() - T0) / 60000); return [Math.floor(m / 60) % 24, m % 60]; };
 const p2 = (n) => String(n).padStart(2, '0');
-let D, EVENTS, THREADS, MAIL_BODY, ATT, CALLS;
+let D, EVENTS, THREADS, MAIL_BODY, ATT;
 // 2026년 10월 달력 위젯 (오늘 = 24일, 매년 반복 일정은 점 + 목록으로 표시)
 function calWidget() {
   const Y = 2026, M = 10, T = 24, first = new Date(Y, M - 1, 1).getDay(), n = new Date(Y, M, 0).getDate();
@@ -192,7 +192,7 @@ $('#pform').onsubmit = async (e) => {
     const km = await crypto.subtle.importKey('raw', new TextEncoder().encode($('#pw').value), 'PBKDF2', false, ['deriveKey']);
     const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: b64(ENC.salt), iterations: ENC.iter, hash: 'SHA-256' }, km, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
     D = JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(ENC.iv) }, key, b64(ENC.ct))));
-    ({ events: EVENTS, threads: THREADS, mailBody: MAIL_BODY, att: ATT, calls: CALLS } = D);
+    ({ events: EVENTS, threads: THREADS, mailBody: MAIL_BODY, att: ATT } = D);
     $('#pw').value = ''; return go('home');
   } catch {
     const f = $('#pform'); f.classList.remove('shake'); void f.offsetWidth; f.classList.add('shake');
@@ -202,4 +202,4 @@ $('#pform').onsubmit = async (e) => {
 };
 
 // 전원 버튼: 화면 끄기 / 켜면 잠금 화면(암호는 다시 입력)
-$('#pwr').onclick = () => { const off = $('#off'); if (off.hidden) off.hidden = false; else { off.hidden = true; $('#pw').value = ''; go('lock'); } };
+$('#pwr').onclick = () => { const off = $('#off'); if (off.hidden) { stopCall(); CALL = null; off.hidden = false; } else { off.hidden = true; $('#pw').value = ''; go('lock'); } };
